@@ -1,73 +1,50 @@
 
- import { useState } from "react"
+import { useState } from "react"
+import AccordianItem from "./AccordianItem";
 
-const Accordions = () =>{
+const responseObj = Array(3).fill().map((_, index) => ({
+    title: `Title ${index + 1}`,
+    description: `This is a longer description for item ${index + 1}. It contains more information about the item and can span multiple lines. You can customize it as needed for your application.`
+}));
 
-    const [clickedIndex,setClickedIndex] = useState(null);
-    const [isOpen,setIsOpen] = useState(false);
-    const [prevSt,setPrev] = useState(null);
-    const [active, setactive]= useState(false);
+const Accordions = () => {
 
-    const accordionHandler = (i) =>{
-           console.log(i,isOpen);
-           setClickedIndex(i);
-           setactive(!active);
-           if(isOpen) {
-            setPrev(i);
-           }
+    const [isMultipleAllowed, setIsMultipleAllowed] = useState(false);
+
+    const multipleAllowHandler = (e) => {
+        setIsMultipleAllowed(e.target.checked);
     }
 
-    const multipleAllowHandler = (e)=>{
-        setIsOpen(e.target.checked);
-        
-    }
+    // is MultipleAllowed = false
+    // We need to only keep one ac open at the time
+
+    // resolution
+    // isMultipleAllowed
+    // selectedIndex
 
     return (
         <>
-         <div style={{
-            background:"red",
-            padding:"0.5rem",
-            width:"auto",
-            height:"auto"
+            <div style={{
+                background: "red",
+                padding: "0.5rem",
+                width: "auto",
+                height: "auto"
 
-         }}>
-            <label htmlFor="">Is multiple open accordion allowed</label>
-            <input type="checkbox" name="open" checked={isOpen} onChange={multipleAllowHandler} id="" />
-         {
-           Array(3).fill().map((_,index)=>{
-            return <div key={index} style={{
-                background:"green",
-                height:"auto",
-                width:"70rem",
-                margin:"0.5rem"
-             }}>
-               <div 
-                style={{
-                    display:"flex",
-                    justifyContent:"space-between",
-                    padding:"1rem",
-                    alignItems:"center",
-                }}
-               >
-               accordions{index+1}
-               <button
-                onClick={()=>{accordionHandler(index)}}
-               >➕</button>
-                </div> 
-                <div style={{
-                    background:"green",
-                    display:(((index===clickedIndex && active) && isOpen )|| (index===clickedIndex && active)) ? "block":"none",
-                }} >Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa eligendi veniam maxime velit consectetur culpa sequi! Dignissimos, dolores nam atque sint tempore, fuga illum ratione iste mollitia laboriosam, asperiores laudantium.
-                { index==clickedIndex ? clickedIndex :"" }
-                </div>
-               </div>
-           })
-         }
-          
-
-          
-         </div>
-
+            }}>
+                <label htmlFor="">Is multiple open accordion allowed</label>
+                <input type="checkbox" name="open" checked={isMultipleAllowed} onChange={multipleAllowHandler} id="" />
+                {
+                    Array(3).fill().map((_, index) => {
+                        return (
+                            <AccordianItem
+                                key={index}
+                                index={index}
+                                item={responseObj[index]}
+                            />
+                        )
+                    })
+                }
+            </div>
         </>
     )
 }
