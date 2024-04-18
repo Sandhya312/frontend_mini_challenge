@@ -11,16 +11,25 @@ const Accordions = () => {
 
     const [isMultipleAllowed, setIsMultipleAllowed] = useState(false);
 
+    const [openAccordions, setOpenAccordions] = useState([]);
+
     const multipleAllowHandler = (e) => {
         setIsMultipleAllowed(e.target.checked);
     }
 
-    // is MultipleAllowed = false
-    // We need to only keep one ac open at the time
-
-    // resolution
-    // isMultipleAllowed
-    // selectedIndex
+    const accordionHandler = (index) => {
+        if (!openAccordions.includes(index)) {
+            // if already open
+            setOpenAccordions((prev) => {
+                return isMultipleAllowed ? [...prev, index] : [index];
+            });
+        }
+        else {
+            setOpenAccordions((prev) => {
+                return prev.filter((item) => item !== index);
+            });
+        }
+    }
 
     return (
         <>
@@ -33,6 +42,13 @@ const Accordions = () => {
             }}>
                 <label htmlFor="">Is multiple open accordion allowed</label>
                 <input type="checkbox" name="open" checked={isMultipleAllowed} onChange={multipleAllowHandler} id="" />
+                <button
+                    onClick = {() => {
+                        setOpenAccordions([]);
+                    }}
+                >
+                    collapse all
+                </button>
                 {
                     Array(3).fill().map((_, index) => {
                         return (
@@ -40,6 +56,8 @@ const Accordions = () => {
                                 key={index}
                                 index={index}
                                 item={responseObj[index]}
+                                isOpen={openAccordions.includes(index)}
+                                accordionHandler={accordionHandler}
                             />
                         )
                     })

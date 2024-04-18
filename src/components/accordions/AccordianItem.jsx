@@ -1,15 +1,7 @@
 /* eslint-disable react/prop-types */
 "use strict";
 
-import { useState } from "react";
-
-function AccordianItem({ index, item }) {
-    const [isOpen, setIsOpen] = useState(false);
-
-    const accordionHandler = () => {
-        setIsOpen(!isOpen);
-    };
-
+function AccordianItem({ index, item, isOpen, accordionHandler }) {
     return (
         <div
             key={index}
@@ -31,7 +23,7 @@ function AccordianItem({ index, item }) {
                 {item.title}
                 <button
                     onClick={() => {
-                        accordionHandler();
+                        accordionHandler(index);
                     }}
                 >
                     ➕
